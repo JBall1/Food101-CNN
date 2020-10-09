@@ -33,7 +33,7 @@ for(x in 1:length(data)) {
   #Resize image to 256x256
   resized <- image_scale(image_scale(file,256),256)
   #contrsat image
-  contrasted <- image_contrast(file,sharpen=1)
+  contrasted <- image_contrast(resized,sharpen=1)
   #convert to cimg format
   converted_contrasted_image <- magick2cimg(contrasted)
   #Apply median filter
