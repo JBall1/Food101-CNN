@@ -31,7 +31,8 @@ data <- food101Data
 #Looking at data to ensure we have apple pie at the start and waffles at the end
 head(data,10)
 tail(data,10)
-
+#Keeping track of process time here
+ptm1 <- proc.time()
 #iterating through data frame of images
 #This is now parallized to use all my CPU cores. In practice should only take 20% of time as before.
 foreach(x = 1:length(data), .packages=c("magick","imager","EBImage") ) %dopar% {
@@ -49,4 +50,7 @@ foreach(x = 1:length(data), .packages=c("magick","imager","EBImage") ) %dopar% {
   img_median = medianFilter(converted_contrasted_image,1)
   #Save image, overwriting old image
   save.image(img_median, file = gsub("JPG", "jpg", paste(data[x])))
+  #Writing to a 'Report.txt' file as %dopar% foreach loops do not allow for printing/logging to console.
+  sink("Report.txt", append=TRUE)
+  cat("Time taken", proc.time() - ptm1)
 }
