@@ -9,11 +9,12 @@ library(magick)
 #Used to filter noise in images
 library(EBImage)
 library(wvtool)
-library(foreach)
 #For parallelization
 library(parallel)
 cl <- parallel::makePSOCKcluster(11)#Utilizing 11 of 12 cores on my computer
 doParallel::registerDoParallel(cl)
+#To use foreach loop
+library(foreach)
 #set working directory to your respective folder
 setwd("C:\\Users\\JoshPC\\Desktop\\food-101")
 
@@ -40,7 +41,7 @@ foreach(x = 1:length(data), .packages=c("magick","imager","EBImage") ) %dopar% {
   print(paste("Current image:", data[x]))
   #Resize image to 256x256
   resized <- image_scale(image_scale(file,256),256)
-  #contrsat image
+  #contrast image
   contrasted <- image_contrast(resized,sharpen=1)
   #convert to cimg format
   converted_contrasted_image <- magick2cimg(contrasted)
