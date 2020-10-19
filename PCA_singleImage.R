@@ -1,10 +1,5 @@
 #By Joshua Ball
 #Reads in a single image, calculates the PCA and saves that image
-library(parallel)
-cl <- parallel::makePSOCKcluster(11)#Utilizing 11 of 12 cores on my computer
-doParallel::registerDoParallel(cl)
-library(foreach)
-
 library(jpeg)
 
 directoryToImages <- "imageV2//"
