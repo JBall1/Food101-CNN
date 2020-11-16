@@ -1,3 +1,2 @@
-# Food101-preprocessing
-
-#h1 [In progress]
+# Food101 CNN in R
+# Description and details in progress
