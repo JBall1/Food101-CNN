@@ -105,18 +105,20 @@ summary(conv_base)
 model <- keras_model_sequential() %>%
   conv_base %>%
   layer_global_average_pooling_2d() %>%
-  layer_dropout(0.5) %>%
-  layer_dense(activation = "softmax",101,kernel_regularizer = regularizer_l2(0.01)) #%>%
+  layer_activation_relu() %>%
+  layer_dropout(0.7) %>%
+  layer_dense(101,kernel_regularizer = regularizer_l2(0.01)) %>%
+  layer_activation_softmax()
 
 
 model %>% compile(
   loss="categorical_crossentropy",
-  optimizer=optimizer_adam(lr=1e-5),
-  #optimizer = optimizer_rmsprop(lr = 1e-5),
+  optimizer=optimizer_adam(lr=1e-4),
   metrics = c("accuracy")
 )
 
-checkpoint_dir <- "FoodCNN/checkpoints/"
+summary(model)
+checkpoint_dir <- "FoodCNN/incpCheckpoints/"
 checkpoint_name <- paste(checkpoint_dir, "food101_V2_-{val_loss:.4f}-{val_acc:.4f}.hdf5")
 #for early stopping, model saving
 my_callbacks <- list(callback_early_stopping(monitor = "val_acc", patience = 18, verbose = 1),
@@ -127,8 +129,8 @@ my_callbacks <- list(callback_early_stopping(monitor = "val_acc", patience = 18,
 
 history <- model %>% fit_generator(
   train_generator,
-  steps_per_epoch = 50,
-  epochs = 200,
+  steps_per_epoch = length(train_generator),
+  epochs = 60,
   validation_data = validation_generator,
   validation_steps = length(validation_generator),
   workers = 6,
