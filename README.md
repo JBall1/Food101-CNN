@@ -1,2 +1,2 @@
 # Food101 CNN in R
-# Description and details in progress
+Paper: https://arxiv.org/abs/2012.03170
